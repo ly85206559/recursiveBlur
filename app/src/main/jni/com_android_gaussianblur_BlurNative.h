@@ -7,13 +7,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     com_android_gaussianblur_BlurNative
- * Method:    blurPixels
- * Signature: ([IIII)V
- */
-JNIEXPORT void JNICALL Java_com_android_gaussianblur_BlurNative_blurPixels
-        (JNIEnv *, jclass, jintArray, jint, jint, jint);
 
 /*
  * Class:     com_android_gaussianblur_BlurNative

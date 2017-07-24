@@ -3,16 +3,6 @@
 #include "blur.h"
 
 JNIEXPORT void JNICALL
-Java_com_android_gaussianblur_BlurNative_blurPixels(JNIEnv *env, jclass type, jintArray img_,
-                                                    jint w, jint h, jint r) {
-    jint *img = (*env)->GetIntArrayElements(env, img_, NULL);
-
-    // TODO
-
-    (*env)->ReleaseIntArrayElements(env, img_, img, 0);
-}
-
-JNIEXPORT void JNICALL
 Java_com_android_gaussianblur_BlurNative_gaussBlurBitmap(JNIEnv *env, jclass type, jobject bitmap,
                                                          jint r) {
     AndroidBitmapInfo bitmapInfo;
@@ -20,10 +10,15 @@ Java_com_android_gaussianblur_BlurNative_gaussBlurBitmap(JNIEnv *env, jclass typ
         return;
     }
 
-    unsigned char *data = NULL;
-    AndroidBitmap_lockPixels(env, bitmap, &data);
+    void *data = NULL;
 
-    gaussBlurBmp(data, bitmapInfo.width, bitmapInfo.height, r);
+    if (ANDROID_BITMAP_FORMAT_RGBA_8888 == bitmapInfo.format) {
+        AndroidBitmap_lockPixels(env, bitmap, (unsigned char *) &data);
+        gaussBlurBmp(data, bitmapInfo.width, bitmapInfo.height, r);
+    } else if (ANDROID_BITMAP_FORMAT_RGB_565 == bitmapInfo.format) {
+        AndroidBitmap_lockPixels(env, bitmap, (unsigned short *) &data);
+        gaussBlurBmp565(data, bitmapInfo.width, bitmapInfo.height, r);
+    }
 
     AndroidBitmap_unlockPixels(env, bitmap);
 }
@@ -37,10 +32,15 @@ Java_com_android_gaussianblur_BlurNative_recursiveBlurBitmap(JNIEnv *env, jclass
         return;
     }
 
-    unsigned char *data = NULL;
-    AndroidBitmap_lockPixels(env, bitmap, &data);
+    void *data = NULL;
 
-    recursiveBlurBmp(data, bitmapInfo.width, bitmapInfo.height, r);
+    if (ANDROID_BITMAP_FORMAT_RGBA_8888 == bitmapInfo.format) {
+        AndroidBitmap_lockPixels(env, bitmap, (unsigned char *) &data);
+        recursiveBlurBmp(data, bitmapInfo.width, bitmapInfo.height, r);
+    } else if (ANDROID_BITMAP_FORMAT_RGB_565 == bitmapInfo.format) {
+        AndroidBitmap_lockPixels(env, bitmap, (unsigned short *) &data);
+        recursiveBlurBmp565(data, bitmapInfo.width, bitmapInfo.height, r);
+    }
 
     AndroidBitmap_unlockPixels(env, bitmap);
 }

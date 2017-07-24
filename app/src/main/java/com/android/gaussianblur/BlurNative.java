@@ -16,16 +16,6 @@ public class BlurNative {
     }
 
     /**
-     * Blur Image By Pixels
-     *
-     * @param img Img pixel array
-     * @param w   Img width
-     * @param h   Img height
-     * @param r   Blur radius
-     */
-    protected static native void blurPixels(int[] img, int w, int h, int r);
-
-    /**
      * Blur Image By Bitmap
      *
      * @param bitmap Img Bitmap
@@ -34,7 +24,6 @@ public class BlurNative {
     protected static native void recursiveBlurBitmap(Bitmap bitmap, int r);
 
     /**
-     *
      * @param bitmap
      * @param r
      */

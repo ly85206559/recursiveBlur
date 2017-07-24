@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
             progress = 1;
         }
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test, options);
         Bitmap img;
         long time = System.currentTimeMillis();
         long costTime = 0;
